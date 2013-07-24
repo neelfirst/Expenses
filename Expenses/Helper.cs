@@ -107,22 +107,25 @@ namespace Expenses
             cs.Close();
             return rval;
         }
-        public DialogResult CatBox(string promptText, double cost, ref string value)
+        public DialogResult CatBox(string promptText, double cost, DateTime dt, ref string value)
         {
             Form form = new Form();
             Label label = new Label();
             Label amount = new Label();
+            Label date = new Label();
             ComboBox comboBox = new ComboBox();
             Button buttonOk = new Button();
             CheckBox checkBox = new CheckBox();
             form.Text = "Specify a Category:";
             label.Text = promptText;
             amount.Text = cost.ToString("C");
+            date.Text = dt.ToString();
             checkBox.Text = "Remember this relationship?";
             buttonOk.Text = "OK";
             buttonOk.DialogResult = DialogResult.OK;
-            label.SetBounds(9, 20, 272, 13);
+            label.SetBounds(9, 20, 172, 13);
             amount.SetBounds(273, 20, 100, 13);
+            date.SetBounds(173, 20, 100, 13);
             comboBox.SetBounds(12, 36, 372, 20);
             buttonOk.SetBounds(309, 72, 75, 23);
             checkBox.SetBounds(12, 72, 275, 24); // ???
@@ -132,7 +135,7 @@ namespace Expenses
             checkBox.Anchor = checkBox.Anchor | AnchorStyles.Right;
             comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             form.ClientSize = new Size(396, 107);
-            form.Controls.AddRange(new Control[] { label, amount, checkBox, comboBox, buttonOk });
+            form.Controls.AddRange(new Control[] { label, amount, date, checkBox, comboBox, buttonOk });
             form.ClientSize = new Size(Math.Max(300, amount.Right + 10), form.ClientSize.Height);
             form.FormBorderStyle = FormBorderStyle.FixedDialog;
             form.StartPosition = FormStartPosition.CenterScreen;

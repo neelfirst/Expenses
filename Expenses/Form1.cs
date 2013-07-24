@@ -82,7 +82,7 @@ namespace Expenses
                             if (cat == "poop")
                             {
                                 // 3. prompt for categorization of each line item
-                                if (Form1_Helper.CatBox(x.desc, x.cost, ref x.cat) == DialogResult.OK)
+                                if (Form1_Helper.CatBox(x.desc, x.cost, x.dt, ref x.cat) == DialogResult.OK)
                                 {
                                     // 4. assemble into internal database
                                     if (!Form1_Helper.writeItem(x))
