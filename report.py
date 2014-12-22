@@ -55,18 +55,32 @@ def getStop(report, length):
 
 report = getType().split('-')
 length = len(report)
-f = open('expenses.csv','r')
+f = open(rules.getPath()+'expenses.csv','r')
 reader = csv.reader(f)
 startDate = getStart(report,length)
 stopDate = getStop(report,length)
 ruleList = rules.getRules().split(',')
 costList = [0] * len(ruleList)
+itemList = ['']
+sum = 0
+category = raw_input("All or "+rules.getRules()+": ")
 
 for line in reader:
 	date = datetime.strptime(line[0], '%m/%d/%Y')
 	if (date >= startDate and date <= stopDate):
 		index = ruleList.index(line[-1])
 		costList[index] = costList[index] + float(line[-2])
-
-for i in range(0,len(ruleList)):
-	print ruleList[i]+'\t'+str(costList[i])
+	if (category == line[3]):
+		itemList.append(line)
+itemList.remove('')
+if (category == "All"):
+	for i in range(0,len(ruleList)):
+		sum = sum + costList[i]
+		print ruleList[i]+'\t'+str(costList[i])
+elif (category in ruleList):
+	for item in itemList:
+		print item[0]+'\t'+item[1]+'\t'+item[2]
+		sum = sum + float(item[2])
+else:
+	print "Not a recognized category."
+print "Total\t"+str(sum)

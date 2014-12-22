@@ -7,7 +7,7 @@ import calendar
 from datetime import datetime
 
 try:
-	f = open('expenses.csv','a')
+	f = open(rules.getPath()+'expenses.csv','a')
 	writer = csv.writer(f)
 
 	if (datetime.now().year != 2014):

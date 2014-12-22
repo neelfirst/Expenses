@@ -3,6 +3,9 @@
 # a programmatically generated script
 # that is imported to and run from process
 
+def getPath():
+	return "/media/airdrive/Airdrive/Expenses/"
+
 def enum(**enums):
 	return type('Enum', (), enums)
 

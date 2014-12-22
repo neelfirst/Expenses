@@ -34,50 +34,60 @@ def modifyRules(desc):
 
 	return rule
 
-# instead of sys.argv try reading the samba folder
-try:
-	f = open(sys.argv[1])
-	reader = csv.reader(f)
-except:
-	print "not a valid CSV file"
-	sys.exit(1)
-
-log = open('expenses.csv','a')
+log = open(rules.getPath()+'expenses.csv','a')
 writer = csv.writer(log)
 chkban = ['Express','Chase','VGI','FID']
 cardban = ['Amazon.com','AMAZON MKT']
 
-for list in reader:
+csvlist = subprocess.check_output("ls "+rules.getPath(),shell=True).split('\n')
+csvlist.remove('archive')
+csvlist.remove('expenses.csv')
+csvlist.remove('')
+
+for item in csvlist:
 	try:
-		if (len(list) == 5 and list[0] == "Sale"):
-			cost = -1 * float(list[-1])
-			date = list[1]
-			desc = list[3].replace('\'','')
-			category = 'none'
-			if not any(i in desc for i in cardban):
+		f = open(rules.getPath()+item)
+		reader = csv.reader(f)
+	except:
+		print "not a valid CSV file"
+		sys.exit(1)
+
+	for list in reader:
+		try:
+			# chase credit card log
+			if (len(list) == 5 and list[0] == "Sale"):
+				cost = -1 * float(list[-1])
+				date = list[1]
+				desc = list[3].replace('\'','')
+				category = 'none'
+				if not any(i in desc for i in cardban):
+					rule = rules.applyRules(date, desc, cost, category)
+					if rule == 'none':
+						rule = modifyRules(desc)
+					writer.writerow([date,desc,cost,rule])
+			# amazon purchases
+			elif (len(list) == 32 and list[5] == "Amazon.com" and list[12] != '1001' and list[13] != 'x'):
+				date = list[0]
+				desc = list[2].replace('\'','')
+				cost = float(list[24][1:])+float(list[25][1:])
+				category = list[3]
 				rule = rules.applyRules(date, desc, cost, category)
 				if rule == 'none':
 					rule = modifyRules(desc)
 				writer.writerow([date,desc,cost,rule])
-		elif (len(list) == 32 and list[5] == "Amazon.com" and list[12] != '1001' and list[13] != 'x'):
-			date = list[0]
-			desc = list[2].replace('\'','')
-			cost = float(list[24][1:])+float(list[25][1:])
-			category = list[3]
-			rule = rules.applyRules(date, desc, cost, category)
-			if rule == 'none':
-				rule = modifyRules(desc)
-			writer.writerow([date,desc,cost,rule])
-		elif (len(list) == 8 and list[0] == "DEBIT" and not any(i in list[2] for i in chkban)):
-			date = list[1]
-			desc = list[2]
-			cost = -1 * float(list[3])
-			category = 'none'
-			rule = rules.applyRules(date, desc, cost, category)
-			if rule == 'none':
-				rule = modifyRules(desc)
-			writer.writerow([date,desc,cost,rule])
-	except Exception, e:
-		print list
-		print e
-		break
+			# chase checking acct
+			elif (len(list) == 8 and list[0] == "DEBIT" and not any(i in list[2] for i in chkban)):
+				date = list[1]
+				desc = list[2]
+				cost = -1 * float(list[3])
+				category = 'none'
+				rule = rules.applyRules(date, desc, cost, category)
+				if rule == 'none':
+					rule = modifyRules(desc)
+				writer.writerow([date,desc,cost,rule])
+		except Exception, e:
+			print list
+			print e
+			break
+	f.close()
+	subprocess.call('mv '+rules.getPath()+item+' '+rules.getPath()+'/archive/'+item,shell=True)
