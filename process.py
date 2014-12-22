@@ -44,6 +44,8 @@ except:
 
 log = open('expenses.csv','a')
 writer = csv.writer(log)
+chkban = ['Express','Chase','VGI','FID']
+cardban = ['Amazon.com','AMAZON MKT']
 
 for list in reader:
 	try:
@@ -52,7 +54,7 @@ for list in reader:
 			date = list[1]
 			desc = list[3].replace('\'','')
 			category = 'none'
-			if ('Amazon.com' not in desc) and ('AMAZON MKT' not in desc):
+			if not any(i in desc for i in cardban):
 				rule = rules.applyRules(date, desc, cost, category)
 				if rule == 'none':
 					rule = modifyRules(desc)
@@ -62,6 +64,15 @@ for list in reader:
 			desc = list[2].replace('\'','')
 			cost = float(list[24][1:])+float(list[25][1:])
 			category = list[3]
+			rule = rules.applyRules(date, desc, cost, category)
+			if rule == 'none':
+				rule = modifyRules(desc)
+			writer.writerow([date,desc,cost,rule])
+		elif (len(list) == 8 and list[0] == "DEBIT" and not any(i in list[2] for i in chkban)):
+			date = list[1]
+			desc = list[2]
+			cost = -1 * float(list[3])
+			category = 'none'
 			rule = rules.applyRules(date, desc, cost, category)
 			if rule == 'none':
 				rule = modifyRules(desc)

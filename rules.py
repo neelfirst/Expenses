@@ -8,7 +8,7 @@ def enum(**enums):
 
 # bank of rules - assigns a label to an expense row
 Rules = enum (	Food='Food',Rent='Rent',Util='Util',Home='Home',Gear='Gear',Cats='Cats',
-		Trans='Trans',Travel='Travel',Health='Health',Fun='Fun',Misc='Misc' )
+		Trans='Trans',Travel='Travel',Health='Health',Fun='Fun',Cash='Cash',Misc='Misc' )
 
 def getRules():
 	list = ''
@@ -22,6 +22,7 @@ def getRules():
 	list = list + Rules.Travel + ","
 	list = list + Rules.Health + ","
 	list = list + Rules.Fun + ","
+	list = list + Rules.Cash + ","
 	list = list + Rules.Misc
 	return list
 
@@ -45,6 +46,8 @@ def checkRule(rule):
 	if rule == 'Health':
 		return True
 	if rule == 'Fun':
+		return True
+	if rule == 'Cash':
 		return True
 	if rule == 'Misc':
 		return True
@@ -537,4 +540,22 @@ def applyRules(date, desc, cost, category):
 		return Rules.Misc
 	if 'Miele S2121 Olympus Canister Vacuum Cleaner' in desc:
 		return Rules.Home
+	if 'ATM' in desc:
+		return Rules.Cash
+	if 'COMCAST' in desc:
+		return Rules.Util
+	if 'PAYPAL           INST XFER  42KJ282B7DQAL   WEB ID: PAYPALSI66' in desc:
+		return Rules.Misc
+	if 'COINBASE.COM/BTC 8003435845 UGXJBKWH        WEB ID: 2455293997' in desc:
+		return Rules.Misc
+	if 'DREW HARRIS      IAT PAYPAL 42KJ27S7LCMRA   WEB ID: 770510487C' in desc:
+		return Rules.Fun
+	if 'Rent' in desc:
+		return Rules.Rent
+	if 'PG&E' in desc:
+		return Rules.Util
+	if 'PGE' in desc:
+		return Rules.Util
+	if 'EBMUD' in desc:
+		return Rules.Util
 	return 'none'
