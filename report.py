@@ -78,9 +78,11 @@ if (category == "All"):
 		sum = sum + costList[i]
 		print ruleList[i]+'\t'+str(costList[i])
 elif (category in ruleList):
+	date = datetime.strptime(line[0], '%m/%d/%Y')
 	for item in itemList:
-		print item[0]+'\t'+item[1]+'\t'+item[2]
-		sum = sum + float(item[2])
+		if (date > startDate and date <= stopDate):
+			print item[0]+'\t'+item[1]+'\t'+item[2]
+			sum = sum + float(item[2])
 else:
 	print "Not a recognized category."
 print "Total\t"+str(sum)
