@@ -561,4 +561,24 @@ def applyRules(date, desc, cost, category):
 		return Rules.Util
 	if 'EBMUD' in desc:
 		return Rules.Util
+	if 'ADY*Spotify USA' in desc:
+		return Rules.Fun
+	if 'CITY OF MONTEREY-PARKING' in desc:
+		return Rules.Trans
+	if 'MONTEREY BAY AQUARIUM' in desc:
+		return Rules.Fun
+	if 'MONTEREY GIFT&BOOK STO' in desc:
+		return Rules.Fun
+	if 'CAFE DAFRIQUE' in desc:
+		return Rules.Food
+	if 'PCPD LLC 800-893-9105' in desc:
+		return Rules.Fun
+	if 'PEDROS BRAZIL CAFE' in desc:
+		return Rules.Food
+	if 'UTRECHT ART 8004471892' in desc:
+		return Rules.Fun
+	if 'PAY*HOMEAWAY COM  2011' in desc:
+		return Rules.Travel
+	if 'PAYPAL *BERKELEYSID' in desc:
+		return Rules.Gear
 	return 'none'
