@@ -10,15 +10,15 @@ try:
 	f = open(rules.getPath()+'expenses.csv','a')
 	writer = csv.writer(f)
 
-	if (datetime.now().year != 2014):
+	if (datetime.now().year != 2015):
 		raise Exception("Update rental cost for the new year.")
 
 	desc = sys.argv[1]
 	month = int(sys.argv[2])
 
 	if (desc == 'Rent'):
-		date = str(month)+"/01/2014"
-		cost = 1219.00
+		date = str(month)+"/01/2015"
+		cost = 1243.38
 	elif (desc == 'PGE' or desc == 'EBMUD'):
 		date = str(month)+"/"+str(calendar.monthrange(datetime.now().year,month)[1])+"/"+str(datetime.now().year)
 		cost = float(sys.argv[3])

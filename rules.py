@@ -561,4 +561,20 @@ def applyRules(date, desc, cost, category):
 		return Rules.Util
 	if 'EBMUD' in desc:
 		return Rules.Util
+	if 'MILAN INTERNATIONAL' in desc:
+		return Rules.Food
+	if 'CAFE DAFRIQUE' in desc:
+		return Rules.Food
+	if 'SP * DOUBLE EDGE FILMS' in desc:
+		return Rules.Fun
+	if 'PAYPAL *BERKELEYSID' in desc:
+		return Rules.Misc
+	if 'OSHPARK.COM' in desc:
+		return Rules.Fun
+	if 'CANCUN SABOR MEXIC' in desc:
+		return Rules.Food
+	if 'CVS/PHARMACY #03026' in desc:
+		return Rules.Health
+	if 'DOHERTYS TRUCK & AUTO' in desc:
+		return Rules.Home
 	return 'none'
